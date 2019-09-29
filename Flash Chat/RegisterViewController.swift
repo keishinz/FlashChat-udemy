@@ -21,27 +21,27 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         emailTextfield.delegate = self
+        passwordTextfield.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    func textFieldShouldReturn(_ emailTextfield: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
        // Try to find next responder
-       if let nextField = emailTextfield.superview?.viewWithTag(emailTextfield.tag + 1) {
+       if let nextField = textfield.superview?.viewWithTag(textfield.tag + 1) {
           nextField.becomeFirstResponder()
        } else {
           // Not found, so remove keyboard.
-          emailTextfield.resignFirstResponder()
+          textfield.resignFirstResponder()
+          performRegister()
        }
        // Do not add a line break
        return true
     }
   
-    @IBAction func registerPressed(_ sender: AnyObject) {
-                
-        //TODO: Set up a new user on our Firbase database. Need Optional Bindings!
+    func performRegister() {
         Auth.auth().createUser(withEmail: emailTextfield.text!, password: passwordTextfield.text!) {
             (user, error) in
             if error != nil {
@@ -51,8 +51,10 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
                 self.performSegue(withIdentifier: "goToChat", sender: self)
             }
         }
-        
     }
     
-    
+    @IBAction func registerPressed(_ sender: AnyObject) {
+        //TODO: Set up a new user on our Firbase database. Need Optional Bindings!
+        performRegister()
+    }
 }

@@ -19,6 +19,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         emailTextfield.delegate = self
+        passwordTextfield.delegate = self
         
     }
 
@@ -26,22 +27,20 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         super.didReceiveMemoryWarning()
     }
 
-    func textFieldShouldReturn(_ emailTextfield: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
        // Try to find next responder
-       if let nextField = emailTextfield.superview?.viewWithTag(emailTextfield.tag + 1) {
+       if let nextField = textfield.superview?.viewWithTag(textfield.tag + 1) {
           nextField.becomeFirstResponder()
        } else {
           // Not found, so remove keyboard.
-          emailTextfield.resignFirstResponder()
+          textfield.resignFirstResponder()
+          performLogin()
        }
        // Do not add a line break
        return true
     }
 
-   
-    @IBAction func logInPressed(_ sender: AnyObject) {
-        
-        //TODO: Log in the user. Need optional bindings.
+    func performLogin() {
         Auth.auth().signIn(withEmail: emailTextfield.text!, password: passwordTextfield.text!) {
             (user, error) in
             if error != nil {
@@ -51,8 +50,11 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                 self.performSegue(withIdentifier: "goToChat", sender: self)
             }
         }
-        
-        
+    }
+   
+    @IBAction func logInPressed(_ sender: AnyObject) {
+        //TODO: Log in the user. Need optional bindings.
+        performLogin()
     }
     
 
