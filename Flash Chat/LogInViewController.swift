@@ -48,6 +48,8 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             (user, error) in
             if error != nil {
                 print(error!)
+                SVProgressHUD.dismiss()
+                //add warning popup
             } else {
                 print("Login Successful.")
                 SVProgressHUD.dismiss()

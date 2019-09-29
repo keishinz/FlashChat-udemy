@@ -49,6 +49,8 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
             (user, error) in
             if error != nil {
                 print(error!)
+                SVProgressHUD.dismiss()
+                //add warning popup
             } else {
                 print("Registration Successful.")
                 SVProgressHUD.dismiss()
